@@ -1,0 +1,19 @@
+PyPI SSH Access
+---------------
+
+For a long time, PyPI access required HTTP basic authentication with username and password.
+Even though OpenID is supported as well today, this cannot work for use in the distutils
+register and upload commands. In addition to these two methods, PyPI also supports
+authentication with an SSH key.
+
+To use this feature, upload your SSH key into the PyPI's 
+`Your Details <http://pypi.python.org/pypi?%3Aaction=user_form>`_ form. As distutils
+currently doesn't support using such a connection, this package performs heavy
+monkey-patching of distutils to make it use the system's ssh command. Users using
+this package should run ssh-agent (which runs automatically in the background on
+many systems) and load their PyPI key into the ssh agent.
+
+This release requires an "ssh" binary in the path. It has been tested only on Mac OS X.
+
+The source code and bug tracker for this package is available on 
+`Bitbucket <https://bitbucket.org/loewis/pypissh>`_.

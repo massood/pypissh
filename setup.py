@@ -14,8 +14,9 @@ class install_sitepackages(install_data):
             self.install_dir = os.path.join(sys.prefix, "lib", "site-packages")
 
 setup(name='pypissh',
-      version='1.0',
+      version='1.1',
       description='PyPI SSH Access',
+      long_description=open("README").read(),
       author='Martin v. Loewis',
       author_email='martin@v.loewis.de',
       url='http://pypi.python.org/pypi/pypissh',
