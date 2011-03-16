@@ -50,12 +50,20 @@ class HTTPSSHHandler(AbstractHTTPHandler):
 def build_opener(*handlers):
     return urllib2.build_opener(HTTPSSHHandler, *handlers)
 
+# upload.py insists on only supporting http and https URLs
+# Fake one, and make urlopen replace that with a httpssh URL
+_goodprefix = 'httpssh://submit@pypi.python.org/pypi'
+_badprefix = 'http://submit@pypi.python.org/pypi'
 _opener = None
-def urlopen(url, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+def urlopen(req, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
     global _opener
     if _opener is None:
         _opener = build_opener()
-    return _opener.open(url, data, timeout)
+    if req.get_full_url().startswith(_badprefix):
+        # parse type, then overwrite
+        req.get_type()
+        req.type = 'httpssh'
+    return _opener.open(req, data, timeout)
 
 def monkeypatch():
     import pypissh # ourselves
@@ -63,10 +71,9 @@ def monkeypatch():
     from distutils.config import PyPIRCCommand
     register.urllib2 = pypissh
     upload.urlopen = urlopen
-    PyPIRCCommand.DEFAULT_REPOSITORY = 'httpssh://submit@pypi.python.org/pypi'
+    PyPIRCCommand.DEFAULT_REPOSITORY = _badprefix
 
 if __name__=='__main__':
-    #import pdb; pdb.set_trace()
     f = urlopen('httpssh://submit@pypi.python.org/pypi')
     print f.read()
 
