@@ -14,7 +14,9 @@ class PipeSocket:
     def read(self, amt=None):
         return self.proc.stdout.read(amt)
 
-    def readline(self):
+    def readline(self, length=None):
+        if length:
+            return self.proc.stdout.readline(length)
         return self.proc.stdout.readline()
 
     def sendall(self, data):
@@ -36,7 +38,6 @@ class HTTPSSHConnection(HTTPConnection):
     def __init__(self, host, timeout=None):
         self.user, self.host = host.split('@')
         HTTPConnection.__init__(self, self.host, timeout=timeout)
-        self.debuglevel = 1
 
     def connect(self):
         p = subprocess.Popen(['ssh', '-T', '-l', self.user, self.host],
