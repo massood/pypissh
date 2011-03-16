@@ -47,22 +47,29 @@ class HTTPSSHHandler(AbstractHTTPHandler):
     def httpssh_open(self, req):
         return self.do_open(HTTPSSHConnection, req)
 
-def build_opener(*handlers):
-    return urllib2.build_opener(HTTPSSHHandler, *handlers)
-
 # upload.py insists on only supporting http and https URLs
 # Fake one, and make urlopen replace that with a httpssh URL
 _goodprefix = 'httpssh://submit@pypi.python.org/pypi'
 _badprefix = 'http://submit@pypi.python.org/pypi'
+class PyPIOpenerDirector(OpenerDirector):
+    def open(self, req, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+        if req.get_full_url().startswith(_badprefix):
+            # parse type, then overwrite
+            req.get_type()
+            req.type = 'httpssh'
+        return OpenerDirector.open(self, req, data=data, timeout=timeout)
+
+def build_opener(*handlers):
+    opener = urllib2.build_opener(HTTPSSHHandler, *handlers)
+    # Monkey-patch class
+    opener.__class__ = PyPIOpenerDirector
+    return opener
+
 _opener = None
 def urlopen(req, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
     global _opener
     if _opener is None:
         _opener = build_opener()
-    if req.get_full_url().startswith(_badprefix):
-        # parse type, then overwrite
-        req.get_type()
-        req.type = 'httpssh'
     return _opener.open(req, data, timeout)
 
 def monkeypatch():
