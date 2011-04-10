@@ -13,7 +13,8 @@ monkey-patching of distutils to make it use the system's ssh command. Users usin
 this package should run ssh-agent (which runs automatically in the background on
 many systems) and load their PyPI key into the ssh agent.
 
-This release requires an "ssh" binary in the path. It has been tested only on Mac OS X.
+This release requires an "ssh" binary in the path.
+It has been tested on Mac OS X and Linux, with Python 2.5, 2.6, and 2.7.
 
 The source code and bug tracker for this package is available on 
 `Bitbucket <https://bitbucket.org/loewis/pypissh>`_.
