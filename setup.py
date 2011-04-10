@@ -10,7 +10,7 @@ class install_sitepackages(install_data):
         install_data.finalize_options(self)
 
 setup(name='pypissh',
-      version='1.1',
+      version='1.2',
       description='PyPI SSH Access',
       long_description=open("README").read(),
       author='Martin v. Loewis',

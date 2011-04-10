@@ -18,3 +18,10 @@ It has been tested on Mac OS X and Linux, with Python 2.5, 2.6, and 2.7.
 
 The source code and bug tracker for this package is available on 
 `Bitbucket <https://bitbucket.org/loewis/pypissh>`_.
+
+Changes
+-------
+
+1.2 (2011-04-10):
+  - support Python 2.5 and 2.6
+  - various bug fixes
