@@ -54,6 +54,11 @@ _goodprefix = 'httpssh://submit@pypi.python.org/pypi'
 _badprefix = 'http://submit@pypi.python.org/pypi'
 class PyPIOpenerDirector(OpenerDirector):
     def open(self, req, data=None, timeout=socket._GLOBAL_DEFAULT_TIMEOUT):
+        if isinstance(req, basestring):
+            req = Request(req, data)
+        else:
+            if data is not None:
+                req.add_data(data)
         if req.get_full_url().startswith(_badprefix):
             # parse type, then overwrite
             req.get_type()
@@ -84,4 +89,3 @@ def monkeypatch():
 if __name__=='__main__':
     f = urlopen('httpssh://submit@pypi.python.org/pypi')
     print f.read()
-
