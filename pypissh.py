@@ -69,6 +69,7 @@ class PyPIOpenerDirector(OpenerDirector):
 # so we have to patch the entire upload_file implementation
 if sys.version_info < (2,7):
     from distutils import log
+    from distutils.spawn import spawn
     from hashlib import md5
     from base64 import standard_b64encode
     import cStringIO as StringIO
