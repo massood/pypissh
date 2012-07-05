@@ -50,8 +50,8 @@ class HTTPSSHHandler(AbstractHTTPHandler):
 
 # upload.py in 2.7 insists on only supporting http and https URLs
 # Fake one, and make urlopen replace that with a httpssh URL
-_goodprefix = 'httpssh://submit@pypi.python.org/pypi'
-_badprefix = 'http://submit@pypi.python.org/pypi'
+_goodprefix = 'httpssh://submit@ssh.pypi.python.org/pypi'
+_badprefix = 'http://submit@ssh.pypi.python.org/pypi'
 class PyPIOpenerDirector(OpenerDirector):
     def open(self, req, data=None):
         if isinstance(req, basestring):

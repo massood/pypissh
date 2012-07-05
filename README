@@ -22,6 +22,10 @@ The source code and bug tracker for this package is available on
 Changes
 -------
 
+1.4 (2012-07-05):
+  - add missing import for gpg signing (Jeff Dairiki)
+  - change server name to ssh.pypi.python.org
+
 1.3 (2011-04-13):
   - fix file list
 
